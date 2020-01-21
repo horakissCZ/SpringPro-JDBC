@@ -1,7 +1,8 @@
 package com.springpro.jdbc.init;
 
 import com.springpro.jdbc.common.Singer;
-import com.springpro.jdbc.plain.SingerDao;
+import com.springpro.jdbc.common.SingerDao;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,16 +13,11 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class JdbcSingerDao implements SingerDao, InitializingBean {
 
-    private DataSource dataSource;
-    private JdbcTemplate jdbcTemplate;
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-        jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.setDataSource(dataSource);
-    }
+    private final DataSource dataSource;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public List<Singer> findAll() {
@@ -30,7 +26,9 @@ public class JdbcSingerDao implements SingerDao, InitializingBean {
 
     @Override
     public String findNameById(Long id) {
-        return null;
+        return jdbcTemplate.queryForObject(
+                "select first_name || ' ' || last_name from MUSICDB.SINGER where id = ?",
+                new Object[]{id}, String.class);
     }
 
     @Override

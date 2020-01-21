@@ -1,6 +1,7 @@
 package com.springpro.jdbc.jdbctemplate;
 
-import com.springpro.jdbc.plain.SingerDao;
+import com.springpro.jdbc.common.SingerDao;
+import com.springpro.jdbc.init.config.EmbeddedJdbcConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
@@ -13,12 +14,12 @@ public class JdbcCfgTest {
     @Test
     public void testH2DB() {
         GenericApplicationContext ctx = new AnnotationConfigApplicationContext(EmbeddedJdbcConfig.class);
-        testDao(ctx.getBean(SingerDao.class ));
+        testDao(ctx.getBean(SingerDao.class));
     }
 
-    private void testDao(SingerDao bean) {
-        assertNotNull(bean);
-        String singerName = bean.findNameById(1L);
+    private void testDao(SingerDao singerDao) {
+        assertNotNull(singerDao);
+        String singerName = singerDao.findNameById(1L);
         assertEquals("John Mayer", singerName);
     }
 }

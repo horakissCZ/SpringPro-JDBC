@@ -1,6 +1,4 @@
-package com.springpro.jdbc.plain;
-
-import com.springpro.jdbc.common.Singer;
+package com.springpro.jdbc.common;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package com.springpro.jdbc.plain;
 
 import com.springpro.jdbc.common.Singer;
+import com.springpro.jdbc.common.SingerDao;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Date;
