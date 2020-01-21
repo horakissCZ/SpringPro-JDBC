@@ -4,20 +4,20 @@ import com.springpro.jdbc.common.Singer;
 import com.springpro.jdbc.common.SingerDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class JdbcSingerDao implements SingerDao, InitializingBean {
 
-    private final DataSource dataSource;
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
     public List<Singer> findAll() {
@@ -26,9 +26,12 @@ public class JdbcSingerDao implements SingerDao, InitializingBean {
 
     @Override
     public String findNameById(Long id) {
-        return jdbcTemplate.queryForObject(
-                "select first_name || ' ' || last_name from MUSICDB.SINGER where id = ?",
-                new Object[]{id}, String.class);
+        var sql =
+                """
+                select first_name || ' ' || last_name from MUSICDB.SINGER where id = :singerId
+                """;
+        var namedParameters = Map.of("singerId", id);
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, String.class);
     }
 
     @Override
@@ -72,7 +75,9 @@ public class JdbcSingerDao implements SingerDao, InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-
+    public void afterPropertiesSet() {
+        if (namedParameterJdbcTemplate ==  null) {
+            throw new BeanCreationException ("Null NamedParameterJdbcTemplate on  SingerDao");
+        }
     }
 }
