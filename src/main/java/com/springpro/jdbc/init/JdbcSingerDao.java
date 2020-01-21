@@ -2,6 +2,7 @@ package com.springpro.jdbc.init;
 
 import com.springpro.jdbc.common.Singer;
 import com.springpro.jdbc.common.SingerDao;
+import com.springpro.jdbc.init.mapper.SingerMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanCreationException;
@@ -21,7 +22,8 @@ public class JdbcSingerDao implements SingerDao, InitializingBean {
 
     @Override
     public List<Singer> findAll() {
-        return null;
+        var sql = "select id, first_name, last_name, birth_date from MUSICDB.SINGER";
+        return namedParameterJdbcTemplate.query(sql, new SingerMapper());
     }
 
     @Override

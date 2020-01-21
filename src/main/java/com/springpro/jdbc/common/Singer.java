@@ -1,7 +1,10 @@
 package com.springpro.jdbc.common;
 
 import com.springpro.jdbc.common.Album;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -10,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class Singer implements Serializable {
 
